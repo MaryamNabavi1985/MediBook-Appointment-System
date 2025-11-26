@@ -1,0 +1,32 @@
+gitignore## Visual Studio & VS Code
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Build results – همه bin و obj رو برای همیشه نادیده بگیر
+bin/
+obj/
+**/bin/
+**/obj/
+
+## .NET & NuGet
+*.csproj.user
+project.assets.json
+*.nuget.*
+packages/
+
+## Blazor WASM
+wwwroot/service-worker*
+wwwroot/staticwebassets*
+
+## Local DB & Secrets
+*.db
+*.mdf
+*.ldf
+*.sqlite
+
+## Logs
+*.log
