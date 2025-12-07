@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MediBook.Application\MediBook.Application.csproj" />
+    <ProjectReference Include="..\MediBook.Domain\MediBook.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
