@@ -12,7 +12,7 @@ namespace MediBook.Domain.ValueObjects
         private static readonly Regex EmailRegEx= new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", RegexOptions.Compiled);
 
         public string Email { get; init; }
-        private EmailAddress() { }
+        //private EmailAddress() { }
 
         public EmailAddress(string email) { 
         if(string.IsNullOrEmpty(email)) throw new ArgumentNullException("email");
