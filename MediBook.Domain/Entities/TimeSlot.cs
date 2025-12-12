@@ -15,6 +15,7 @@ namespace MediBook.Domain.Entities
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
         public bool IsBooked { get; private set; }
+        public Guid? AppointmentId { get; private set; }
 
         private TimeSlot() {}
         public static TimeSlot Create (
