@@ -1,12 +1,9 @@
 ﻿using FluentAssertions;
-using Xunit;
 using MediBook.Domain.Entities;
-using MediBook.Domain.ValueObjects;
 using MediBook.Domain.Events;
-using MediBook.Domain.Common;
 using MediBook.Domain.Tests.Common;
 
-namespace MediBook.Domain.Tests.Appointment
+namespace MediBook.Domain.Tests.Entities
 {
     public class AppointmentTests
     {
@@ -24,7 +21,7 @@ namespace MediBook.Domain.Tests.Appointment
                 var clock = new FixedClock(DateTime.UtcNow);
             //act
 
-            var appointment = MediBook.Domain.Entities.Appointment.Create(
+            var appointment = Appointment.Create(
                 patientId, doctorId,
                 timeSlotId, 
                 startTime, endTime, clock, 

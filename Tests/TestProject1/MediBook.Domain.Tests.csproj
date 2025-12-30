@@ -26,4 +26,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Appointment\" />
+    <Folder Include="Events\" />
+  </ItemGroup>
+
 </Project>
