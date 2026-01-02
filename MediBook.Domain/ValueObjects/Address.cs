@@ -16,10 +16,22 @@ namespace MediBook.Domain.ValueObjects
         private Address() {}
         public Address(string street, string city, string postalCode, string country = "Germany")
         {
-            Street = street?.Trim() ?? throw new ArgumentNullException(nameof(street));
-            City = City?.Trim() ?? throw new ArgumentNullException(nameof(city));
-            PostalCode = PostalCode?.Trim() ?? throw new ArgumentNullException(nameof(postalCode));
-            Country = country.Trim();
+            
+            Street = Guard(street, nameof(street));
+            City = Guard(city, nameof(city));
+            PostalCode = Guard(postalCode, nameof(postalCode));
+            Country = Guard(country, nameof(country));
         }
+
+
+        private static string Guard(string value, string paramName)
+        {
+            if(value is null)
+                throw new ArgumentNullException(paramName);
+            if(string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Value cannot be empty or whitespace.", paramName);
+            return value.Trim();
+        }
+
     }
 }
