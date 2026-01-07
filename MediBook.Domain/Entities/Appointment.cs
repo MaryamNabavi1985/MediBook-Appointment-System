@@ -38,7 +38,7 @@ namespace MediBook.Domain.Entities
             Guid timeSlotId,
             DateTime startTime,
             DateTime endTime,
-            IClock clock,
+            DateTime now,
             string? patientNotes = null
             )
           {
@@ -56,7 +56,7 @@ namespace MediBook.Domain.Entities
                 StartTime = startTime.ToUniversalTime(),
                 EndTime = endTime.ToUniversalTime(),
                 Notes = patientNotes?.Trim(),
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = now,
                 Status = AppointmentStatus.Pending
 
             };
@@ -64,30 +64,30 @@ namespace MediBook.Domain.Entities
             appointment.AddDomainEvent(new AppointmentCreatedEvent(appointment.Id));
             appointment.AddDomainEvent(new PatientAppointmentAddedEvent(patientId, appointment.Id));
 
-            appointment.SetCreatedDate(clock.Now);
+            appointment.SetCreatedDate(now);
 
             return appointment;
  
         }
-        public void Confirm(IClock clock)
+        public void Confirm(DateTime now)
         {
             if (Status != AppointmentStatus.Pending)
                 throw new DomainException("Only pending appointments can be confirmed");
 
             Status = AppointmentStatus.Confirmed;
-            UpdatedAt = DateTime.UtcNow;
+            UpdatedAt = now;
             AddDomainEvent(new AppointmentConfirmedEvent(this));
         }
-        public void Cancel(IClock clock)
+        public void Cancel(DateTime now)
         {
             if (Status is AppointmentStatus.Cancelled or AppointmentStatus.Completed)
                 throw new DomainException("Cannot cancel an already processed appointment");
 
-            if (StartTime < clock.Now.AddHours(24))
+            if (StartTime < now.AddHours(24))
                 throw new DomainException("Cancellation not allowed less than 24 hours before appointment");
 
             Status = AppointmentStatus.Cancelled;
-            UpdatedAt = clock.Now;
+            UpdatedAt = now;
             AddDomainEvent(new AppointmentCancelEvent(this.Id));
         }
         public void Complete()

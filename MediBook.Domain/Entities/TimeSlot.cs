@@ -15,6 +15,7 @@ namespace MediBook.Domain.Entities
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
         public bool IsBooked { get; private set; }
+        public Guid? AppointmentId { get; private set; }
 
         private TimeSlot() {}
         public static TimeSlot Create (
@@ -41,11 +42,11 @@ namespace MediBook.Domain.Entities
             return slot;
         }
 
-        public void Book(Appointment appointment,IClock clock)
+        public void Book(Guid appointmentId,IClock clock)
         {
             if (IsBooked) throw new DomainException("Time slot is already booked");
             if (StartTime < clock.Now.AddHours(1)) throw new DomainException("Cannot book less than 1 hour before start");
-            Appointment = appointment ?? throw new ArgumentNullException(nameof(appointment));
+            AppointmentId = appointmentId;
             IsBooked = true;
             SetUpdateDate(clock.Now);
         }
@@ -53,7 +54,7 @@ namespace MediBook.Domain.Entities
         {
             if (!IsBooked) throw new DomainException("Time slot is not booked");
             if (StartTime < clock.Now.AddHours(2)) throw new DomainException("Cannot cancel less than 2 hours before start");
-            Appointment = null;
+            AppointmentId = null;
             IsBooked = false;
             SetUpdateDate(clock.Now);
         }

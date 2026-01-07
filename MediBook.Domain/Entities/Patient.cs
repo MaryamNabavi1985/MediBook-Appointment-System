@@ -27,10 +27,12 @@ namespace MediBook.Domain.Entities
         EmailAddress email,
         PhoneNumber phoneNumber,
         DateOfBirth dateOfBirth,
-        Address? address = null,
-        IClock? clock = null!)
+        DateTime now,
+        Address? address = null
+        )
+         
         {
-            ArgumentNullException.ThrowIfNull(clock);
+          
 
             var patient = new Patient
             {
@@ -40,20 +42,23 @@ namespace MediBook.Domain.Entities
                 DateOfBirth = dateOfBirth ?? throw new ArgumentNullException(nameof(dateOfBirth)),
                 Address = address
             };
-            patient.SetCreatedDate(clock.Now);
+            patient.SetCreatedDate(now);
             patient.AddDomainEvent(new PatientCreatedEvent(patient));
             return patient;
         }
 
-        public int Age => DateOfBirth.CalculateAge();
-
-        public void UpdateAddres(Address newAddress, IClock clock)
+       public int CalculateAge(DateTime today)
         {
-            Address =  newAddress ?? throw new ArgumentNullException(nameof(newAddress));
-            SetUpdateDate(clock!.Now);
+            return DateOfBirth.CalculateAge(today);
         }
 
-        public void AddApointment(Appointment appointment,IClock clock)
+        public void UpdateAddres(Address newAddress, DateTime now)
+        {
+            Address =  newAddress ?? throw new ArgumentNullException(nameof(newAddress));
+            SetUpdateDate(now);
+        }
+
+        public void AddApointment(Appointment appointment,DateTime now)
         {
             if (appointment == null) throw new ArgumentNullException(nameof(appointment));
             if (appointment.PatientId != Id) throw new DomainException("Appointment does not belong to this patient");
@@ -61,20 +66,20 @@ namespace MediBook.Domain.Entities
                 throw new DomainException("Patient already has an appointment at this time");
 
             _appointments.Add(appointment);
-            SetUpdateDate(clock!.Now);
+            SetUpdateDate(now);
             AddDomainEvent(new PatientAppointmentAddedEvent(this.Id, appointment.Id));
              
         }
 
-        public void RemoveAppointment(Guid appointmentId, IClock? clock = null!)
+        public void RemoveAppointment(Guid appointmentId, DateTime now)
         {
             var appointment = _appointments.FirstOrDefault(a => a.Id == appointmentId)
               ?? throw new DomainException("Appointment not found");
-            if (appointment.StartTime < DateTime.UtcNow.AddHours(24))
+            if (appointment.StartTime < now.AddHours(24))
                 throw new DomainException("Cannot cancel appointment less than 24 hours before");
 
             _appointments.Remove(appointment);
-            SetUpdateDate(clock!.Now);
+            SetUpdateDate(now);
         }
     }
 }
