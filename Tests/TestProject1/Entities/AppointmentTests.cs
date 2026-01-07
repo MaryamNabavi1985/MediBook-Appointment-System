@@ -18,13 +18,13 @@ namespace MediBook.Domain.Tests.Entities
                 var endTime = startTime.AddMinutes(30);
                 var timeSlotId = Guid.NewGuid();
                 string patientNote = string.Empty;
-                var clock = new FixedClock(DateTime.UtcNow);
+                var now = DateTime.Now;
             //act
 
             var appointment = Appointment.Create(
                 patientId, doctorId,
                 timeSlotId, 
-                startTime, endTime, clock, 
+                startTime, endTime, now, 
                 patientNote);
 
            //assert
