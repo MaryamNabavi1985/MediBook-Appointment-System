@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediBook.Domain.ValueObjects
 {
-    public record FullName
+    public sealed record FullName
     {
         public string FirstName { get; init; }
         public string LastName { get; init; }
@@ -14,8 +14,10 @@ namespace MediBook.Domain.ValueObjects
 
         public FullName(string firstName, string lastName)
         {
-            if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentException("First name is required");
-            if (string.IsNullOrWhiteSpace(lastName)) throw new ArgumentException("Last name is required");
+            if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentNullException("First name is required", nameof(firstName));
+            if (string.IsNullOrWhiteSpace(lastName)) throw new ArgumentNullException("Last name is required", nameof(lastName));
+            if (firstName.Length > 50) throw new ArgumentException("First name cannot exceed 50 characters", nameof(firstName));
+            if (lastName.Length > 50) throw new ArgumentException("Last name cannot exceed 50 characters", nameof(lastName));
 
             FirstName = firstName.Trim();
             LastName = lastName.Trim();
