@@ -26,7 +26,6 @@ namespace MediBook.Domain.Entities
         {
             if (startTime >= endTime) throw new DomainException("Start time must be before end time");
             if (endTime.Subtract(startTime) < TimeSpan.FromMinutes(15)) throw new DomainException("Minimum slot duration is 15 minutes");
-
             if (startTime > clock.Now.AddMonths(6)) throw new DomainException("Time slots cannot be created more than 6 months in advance");
 
             var slot = new TimeSlot
