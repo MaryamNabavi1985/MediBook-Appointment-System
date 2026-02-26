@@ -29,11 +29,11 @@ namespace MediBook.Domain.Entities
             string specialty,
             EmailAddress email,
             PhoneNumber phoneNumber,
-            string city = "Berlin",
-            IClock clock = null!
+            DateTime now,
+            string city = "Berlin"
           )
         {
-            ArgumentNullException.ThrowIfNull(clock);
+          
             if (string.IsNullOrWhiteSpace(specialty))
                 throw new ArgumentException("Specialty is required");
 
@@ -46,12 +46,12 @@ namespace MediBook.Domain.Entities
                 City = city.Trim() ?? throw new ArgumentNullException(nameof(city)),
             };
 
-            doctor.SetCreatedDate(clock.Now);
+            doctor.SetCreatedDate(now);
             doctor.AddDomainEvent(new DoctorCreatedEvent(doctor));
             return doctor;
         }
 
-        public void AddTimeSlot(TimeSlot timeSlot , IClock clock = null!)
+        public void AddTimeSlot(TimeSlot timeSlot , DateTime now)
         {
             if (timeSlot == null) throw new ArgumentNullException(nameof(timeSlot));
             if (timeSlot.DoctorId != Id) throw new DomainException("TimeSlot does not belong to this doctor");
@@ -60,7 +60,7 @@ namespace MediBook.Domain.Entities
                 throw new DomainException("Doctor already has a time slot at this time");
 
             _availableTimeSlots.Add(timeSlot);
-            SetUpdateDate(clock.Now);
+            SetUpdateDate(now);
             AddDomainEvent(new DoctorTimeSlotAddedEvent(this, timeSlot));
         }
 

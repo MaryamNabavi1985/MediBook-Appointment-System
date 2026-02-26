@@ -10,7 +10,7 @@ namespace MediBook.Domain.ValueObjects
     {
         public string FirstName { get; init; }
         public string LastName { get; init; }
-        private FullName() { }
+        //private FullName() { }
 
         public FullName(string firstName, string lastName)
         {

@@ -8,22 +8,22 @@ namespace MediBook.Domain.ValueObjects
 {
     public record DateOfBirth
     {
-        public DateTime Value { get; init; }
+        public DateTime Value { get; }
 
-        public DateOfBirth()
+        private DateOfBirth()
         {
 
         }
         public DateOfBirth(DateTime value) {
-            if (value > DateTime.Today) throw new ArgumentException("Birth date cannot be in the future");
-            if (value < DateTime.Today.AddYears(-130)) throw new ArgumentException("Invalid birth date");
+            var date = value.Date;
+            if (date > DateTime.Today) throw new ArgumentException("Birth date cannot be in the future" ,nameof(value));
+            if (date < DateTime.Today.AddYears(-130)) throw new ArgumentException("Invalid birth date." ,nameof(value));
 
-            Value = value.Date;
+            Value = date;
         }
 
-        public int CalculateAge()
+        public int CalculateAge(DateTime today)
         {
-            var today = DateTime.Today;
             var age = today.Year - Value.Year;
             if (Value.Date > today.AddYears(-age)) age--;
 
