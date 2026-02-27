@@ -19,10 +19,10 @@ jobs:
       with:
         dotnet-version: 9.0
 
-    - name: Restor dependencies
+    - name: Restore dependencies
       run: dotnet restore
 
-    - name: buid
+    - name: build
       run: dotnet build --configuration Release --no-restore
 
     - name : Run tests
