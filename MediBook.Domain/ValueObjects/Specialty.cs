@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace MediBook.Domain.ValueObjects
 {
-    public record Speciality
+    public record Specialty
     {
-         public string SpecialityName { get;init; }
+         public string SpecialtyName { get;init; }
          
-        private Speciality() { }
+        private Specialty() { }
 
-        public Speciality(string name) { 
+        public Specialty(string name) { 
             if(name == null) 
                 throw new ArgumentNullException("name");
 
             name = name.Trim();
-            SpecialityName = name;
+            SpecialtyName = name;
 
         }
 
-        public override string ToString() => SpecialityName;
+        public override string ToString() => SpecialtyName;
     }
 }

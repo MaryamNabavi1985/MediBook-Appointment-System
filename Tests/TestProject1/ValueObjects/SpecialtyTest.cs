@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MediBook.Domain.Tests.ValueObjects
 {
-    public class SpecialityTest
+    public class SpecialtyTest
     {
         [Fact]
         public void Constructor_should_ThrowException_When_NameIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new Speciality(null));
+                    Assert.Throws<ArgumentNullException>(() => new Specialty(null));
         }
 
 
@@ -21,9 +21,9 @@ namespace MediBook.Domain.Tests.ValueObjects
         {
             var name = "Cardiology";
 
-            var act = new Speciality(name);
+            var act = new Specialty(name);
 
-            Assert.Equal("Cardiology",act.SpecialityName);
+            Assert.Equal("Cardiology",act.SpecialtyName);
 
         }
 
@@ -32,15 +32,15 @@ namespace MediBook.Domain.Tests.ValueObjects
         {
             var name = "  Neurology  ";
 
-            var act = new Speciality(name);
+            var act = new Specialty(name);
 
-            Assert.Equal("Neurology", act.SpecialityName);
+            Assert.Equal("Neurology", act.SpecialtyName);
         }
         [Fact]
         public void Two_Specialities_With_Same_Name_Should_Be_Equal()
         {
-            var s1 = new Speciality("Dermatology");
-            var s2 = new Speciality("Dermatology");
+            var s1 = new Specialty("Dermatology");
+            var s2 = new Specialty("Dermatology");
                       
             Assert.Equal(s1, s2);
         }
